@@ -1,30 +1,41 @@
 import * as THREE from 'three';
 import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
 import {MTLLoader} from 'three/addons/loaders/MTLLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 function main() {
     const canvas = document.querySelector('#c');
     const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
+    renderer.setClearColor( 0xffffff, 0);
     
-    const fov = 100;
-    const aspect = 2;
+    const fov = 50;
+    const aspect = window.innerWidth / window.innerHeight;;
     const near = 0.1;
-    const far = 10;
+    const far = 1000;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 4;
+    camera.position.set(0,10,20);
+
+    const controls = new OrbitControls( camera, canvas );
+	controls.target.set( 0, 5, 0 );
+	controls.update();
 
     const scene = new THREE.Scene();
     const color = 0xFFFFFF;
-    const intensity = 3;
+    const intensity = 2;
     const light = new THREE.DirectionalLight(color, intensity);
-    light.position.set(-1, 2, 4);
+    light.position.set(-100, 200, 400);
     scene.add(light);
 
+    var ambientLight = new THREE.AmbientLight(0xffffff, 2); 
+    scene.add(ambientLight);
+
+    
     // Cylinder
-    const radiusTop = 1;
-    const radiusBottom = 1;
     const cylinderHeight = 2;
     const radialSegments = 12;
+    const radiusTop = 1;
+    const radiusBottom = 1;
+    
     const cylinderGeometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, cylinderHeight, radialSegments);
     const cylinderMaterial = new THREE.MeshPhongMaterial({color: 0x0097FF});
     const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial);
@@ -58,20 +69,16 @@ function main() {
 
     const mtlLoader = new MTLLoader();
     const objLoader = new OBJLoader();
-        
-    mtlLoader.load('resources/models/katana.mtl', (mtl) => {
+    mtlLoader.load('/resources/models/katana.mtl', (mtl) => {
     mtl.preload();
     objLoader.setMaterials(mtl);
-    objLoader.load('resources/models/katana.obj', (root) => {
-        
-    const scaleFactor = 5.0;
-    root.scale.set(scaleFactor, scaleFactor, scaleFactor);
-    root.position.y = 2.0;
+    objLoader.load('/resources/models/katana.obj', (root) => {
+    root.scale.set(1.5, 1.5, 1.5);
+    root.rotation.y = 120;
+    root.position.set(5, -5, 0);
     scene.add(root);
-        
     });
-    });
-
+  });
 
     // Render()
     function render(time) {
