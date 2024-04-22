@@ -26,7 +26,7 @@ function main() {
     light.position.set(-100, 200, 400);
     scene.add(light);
 
-    var ambientLight = new THREE.AmbientLight(0xffffff, 2); 
+    var ambientLight = new THREE.AmbientLight(0xffffff, 1); // Added Ambient lighting for Orbital Controls
     scene.add(ambientLight);
 
     
