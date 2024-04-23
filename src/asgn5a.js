@@ -58,7 +58,7 @@ function main() {
     const boxDepth = 2;
     const boxGeometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
     const loader = new THREE.TextureLoader();
-    const texture = loader.load('resources/images/minecraft_diamond_ore.jpg');
+    const texture = loader.load('../resources/images/minecraft_diamond_ore.jpg');
     texture.colorSpace = THREE.SRGBColorSpace;
 
     const boxMaterial = new THREE.MeshPhongMaterial({map: texture});
@@ -69,10 +69,10 @@ function main() {
 
     const mtlLoader = new MTLLoader();
     const objLoader = new OBJLoader();
-    mtlLoader.load('katana.mtl', (mtl) => {
+    mtlLoader.load('../resources/models/katana.mtl', (mtl) => {
     mtl.preload();
     objLoader.setMaterials(mtl);
-    objLoader.load('katana.obj', (root) => {
+    objLoader.load('../resources/models/katana.obj', (root) => {
     root.scale.set(1.5, 1.5, 1.5);
     root.rotation.y = 120;
     root.position.set(5, -5, 0);
